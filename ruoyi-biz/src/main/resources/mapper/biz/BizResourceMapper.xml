@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizResourceMapper">
+    
+    <resultMap type="BizResource" id="BizResourceResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="typeDesc"    column="type_desc"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="size"    column="size"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizResourceVo">
+        select id, name, type, type_desc, parent_id, size, create_by, create_time, update_by, update_time from biz_resource
+    </sql>
+
+    <select id="selectBizResourceList" parameterType="BizResource" resultMap="BizResourceResult">
+        <include refid="selectBizResourceVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="typeDesc != null  and typeDesc != ''"> and type_desc = #{typeDesc}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="size != null "> and size = #{size}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizResourceById" parameterType="Long" resultMap="BizResourceResult">
+        <include refid="selectBizResourceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBizResource" parameterType="BizResource" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="typeDesc != null and typeDesc != ''">type_desc,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="size != null">size,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="typeDesc != null and typeDesc != ''">#{typeDesc},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="size != null">#{size},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizResource" parameterType="BizResource">
+        update biz_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="typeDesc != null and typeDesc != ''">type_desc = #{typeDesc},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizResourceById" parameterType="Long">
+        delete from biz_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteBizResourceByIds" parameterType="String">
+        delete from biz_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

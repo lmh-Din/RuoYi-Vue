@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizBookMapper">
+    
+    <resultMap type="BizBook" id="BizBookResult">
+        <result property="id"    column="id"    />
+        <result property="bookName"    column="book_name"    />
+        <result property="grade"    column="grade"    />
+        <result property="subject"    column="subject"    />
+        <result property="semester"    column="semester"    />
+        <result property="press"    column="press"    />
+        <result property="version"    column="version"    />
+        <result property="publisher"    column="publisher"    />
+        <result property="coverLink"    column="cover_link"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizBookVo">
+        select id, book_name, grade, subject, semester, press, version, publisher, cover_link, create_by, create_time, update_by, update_time from biz_book
+    </sql>
+
+    <select id="selectBizBookList" parameterType="BizBook" resultMap="BizBookResult">
+        <include refid="selectBizBookVo"/>
+        <where>  
+            <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
+            <if test="grade != null  and grade != ''"> and grade = #{grade}</if>
+            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
+            <if test="semester != null  and semester != ''"> and semester = #{semester}</if>
+            <if test="press != null  and press != ''"> and press = #{press}</if>
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+            <if test="publisher != null  and publisher != ''"> and publisher = #{publisher}</if>
+            <if test="coverLink != null  and coverLink != ''"> and cover_link = #{coverLink}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizBookById" parameterType="Long" resultMap="BizBookResult">
+        <include refid="selectBizBookVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBizBook" parameterType="BizBook" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookName != null">book_name,</if>
+            <if test="grade != null and grade != ''">grade,</if>
+            <if test="subject != null and subject != ''">subject,</if>
+            <if test="semester != null and semester != ''">semester,</if>
+            <if test="press != null">press,</if>
+            <if test="version != null">version,</if>
+            <if test="publisher != null">publisher,</if>
+            <if test="coverLink != null">cover_link,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bookName != null">#{bookName},</if>
+            <if test="grade != null and grade != ''">#{grade},</if>
+            <if test="subject != null and subject != ''">#{subject},</if>
+            <if test="semester != null and semester != ''">#{semester},</if>
+            <if test="press != null">#{press},</if>
+            <if test="version != null">#{version},</if>
+            <if test="publisher != null">#{publisher},</if>
+            <if test="coverLink != null">#{coverLink},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizBook" parameterType="BizBook">
+        update biz_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookName != null">book_name = #{bookName},</if>
+            <if test="grade != null and grade != ''">grade = #{grade},</if>
+            <if test="subject != null and subject != ''">subject = #{subject},</if>
+            <if test="semester != null and semester != ''">semester = #{semester},</if>
+            <if test="press != null">press = #{press},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="publisher != null">publisher = #{publisher},</if>
+            <if test="coverLink != null">cover_link = #{coverLink},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizBookById" parameterType="Long">
+        delete from biz_book where id = #{id}
+    </delete>
+
+    <delete id="deleteBizBookByIds" parameterType="String">
+        delete from biz_book where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
